@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<robot name="husky" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:arg name="laser_enabled" default="false" />
+    <xacro:arg name="realsense_enabled" default="false" />
+    <xacro:arg name="namespace" default="" />
+    <xacro:arg name="suffix_ns" default="$(arg namespace)"/>
+    
+    <!-- Include Racecar -->
+    <xacro:include filename="$(find racecar_description)/urdf/base.xacro" />
+    
+    <xacro:racecar_base namespace="$(arg suffix_ns)"/>
+
+</robot>
+

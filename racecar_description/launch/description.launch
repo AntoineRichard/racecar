@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="namespace" default=""/>
+  <arg name="laser_enabled" default="$(optenv RACECAR_HOKUYO_ENABLED true)"/>
+  <arg name="realsense_enabled" default="$(optenv RACECAR_REALSENSE_ENABLED false)"/>
+  
+  <group if="$(eval namespace == '')">
+    <param name="robot_description"
+            command="$(find xacro)/xacro '$(find racecar_description)/urdf/racecar.urdf.xacro'
+            laser_enabled:=$(arg laser_enabled)
+            realsense_enabled:=$(arg realsense_enabled)
+            " />
+  </group>
+  <group unless="$(eval namespace== '')">
+    <param name="robot_description"
+            command="$(find xacro)/xacro '$(find racecar_description)/urdf/racecar.urdf.xacro'
+            namespace:=$(arg namespace)
+            suffix_ns:=$(arg namespace)/
+            laser_enabled:=$(arg laser_enabled)
+            realsense_enabled:=$(arg realsense_enabled)
+            " />
+  </group>
+
+</launch>

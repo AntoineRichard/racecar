@@ -1,0 +1,64 @@
+<?xml version='1.0'?>
+
+<launch>
+    <arg name="namespace" default=""/>
+    <arg name="x"     default="0"/>
+    <arg name="y"     default="0"/>
+    <arg name="yaw"   default="0"/>
+
+    <group ns="/$(arg namespace)">
+        <!-- Load joint controller configurations from YAML file to parameter server -->
+        <rosparam file="$(find racecar_control)/config/racecar_control.yaml" command="load"/>
+
+        <!-- convert joint states to TF transforms for rviz, etc -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+        </node>
+
+        <!-- control node -->
+        <node pkg="racecar_control" type="gazebo_interface.py" name="gazebo_interface" output="screen">
+              <remap from="~front_left_wheel_vel_ctrl"          to="front_left_wheel_vel_controller/command"/>
+              <remap from="~front_right_wheel_vel_ctrl"         to="front_right_wheel_vel_controller/command"/>
+              <remap from="~rear_left_wheel_vel_ctrl"           to="rear_left_wheel_vel_controller/command"/>
+              <remap from="~rear_right_wheel_vel_ctrl"          to="rear_right_wheel_vel_controller/command"/>
+              <remap from="~left_steering_hinge_position_ctrl"  to="left_hinge_position_controller/command"/>
+              <remap from="~right_steering_hinge_position_ctrl" to="right_hinge_position_controller/command"/>
+              <remap from="~cmd_drive"                          to="cmd_drive"/>
+        </node>
+
+        <!-- Remap joint names if a namespace is used -->
+        <group unless="$(eval namespace == '')">
+             <arg name="front_left"  default="$(arg namespace)/front_left_wheel"/>
+             <arg name="front_right" default="$(arg namespace)/front_right_wheel"/>
+             <arg name="rear_left"   default="$(arg namespace)/rear_left_wheel"/>
+             <arg name="rear_right"  default="$(arg namespace)/rear_right_wheel"/>
+             <arg name="right_hinge"  default="$(arg namespace)/right_hinge"/>
+             <arg name="left_hinge"  default="$(arg namespace)/left_hinge"/>
+             <rosparam param="front_left_wheel_vel_controller/joint" subst_value="True">$(arg front_left)</rosparam> 
+             <rosparam param="front_right_wheel_vel_controller/joint" subst_value="True">$(arg front_right)</rosparam> 
+             <rosparam param="rear_left_wheel_vel_controller/joint" subst_value="True">$(arg rear_left)</rosparam> 
+             <rosparam param="rear_right_wheel_vel_controller/joint" subst_value="True">$(arg rear_right)</rosparam> 
+             <rosparam param="right_hinge_position_controller/joint" subst_value="True">$(arg right_hinge)</rosparam> 
+             <rosparam param="left_hinge_position_controller/joint" subst_value="True">$(arg left_hinge)</rosparam> 
+        </group>
+
+    </group>
+
+    <!-- Start controller manager outside of the namespace -->
+    <node name="controller_manager" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/$(arg namespace)" args="rear_left_wheel_vel_controller
+                                                    rear_right_wheel_vel_controller
+                                                    front_left_wheel_vel_controller
+                                                    front_right_wheel_vel_controller
+                                                    left_hinge_position_controller
+                                                    right_hinge_position_controller
+                                                    joint_state_controller"/>
+
+    <!-- spawn the car -->
+    <include file="$(find racecar_description)/launch/spawn_racecar.launch">
+        <arg name="namespace" value="$(arg namespace)"/>
+        <arg name="x"     value="$(arg x)"/>
+        <arg name="y"     value="$(arg y)"/>
+        <arg name="yaw"   value="$(arg yaw)"/>
+    </include>
+
+</launch>

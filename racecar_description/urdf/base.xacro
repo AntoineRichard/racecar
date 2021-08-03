@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot name="racecar" xmlns:xacro="http://ros.org/wiki/xacro">
+    <!-- URDF/XACRO includes -->
+    <xacro:include filename="$(find racecar_description)/urdf/wheel.urdf.xacro" />
+    <xacro:include filename="$(find racecar_description)/urdf/hinge.urdf.xacro" />
+    <xacro:property name="M_PI" value="3.14159" />
+    
+    <!-- Base size -->
+    <xacro:property name="base_x_size" value="0.4" /> 
+    <xacro:property name="base_y_size" value="0.2" /> 
+    <xacro:property name="base_z_size" value="0.06" /> 
+
+    <!-- Wheel Mounting Positions -->
+    <xacro:property name="wheel_base" value="0.325" />
+    <xacro:property name="track" value="0.245" />
+
+    <!-- Wheel Properties --> 
+    <xacro:property name="wheel_length" value="0.045" /> 
+    <xacro:property name="wheel_radius" value="0.05" />
+
+    <xacro:macro name="racecar_base" params="namespace">
+        <!-- Base link is the center of the robot's -->
+        <link name="${namespace}base_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="package://racecar_description/meshes/chassis.STL" />
+                </geometry>
+            </visual>
+            <collision>
+                <origin xyz="${ -0.03 + base_x_size/2} 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="${base_x_size} ${base_y_size*0.9} ${base_z_size}"/>
+                </geometry>
+            </collision>
+        </link>
+        <link name="${namespace}inertial_link">
+            <inertial>
+                <origin xyz="0.1477 0 0" rpy="0 0 0" />
+                <mass value="2.5" />
+                <inertia ixx="0.010609" ixy="0"          ixz="0"
+                                        iyy="0.050409"   iyz="0"
+                                                         izz="0.05865" />
+            </inertial>
+        </link>
+        <joint name="${namespace}inertial_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="${namespace}base_link" />
+            <child link="${namespace}inertial_link" />
+        </joint>
+
+        <!-- Racecar hinge macros -->
+        <xacro:racecar_hinge hinge_prefix="left" namespace="${namespace}">
+            <origin xyz="${wheel_base} ${base_y_size/2} 0" rpy="0 0 0" />
+        </xacro:racecar_hinge>
+        <xacro:racecar_hinge hinge_prefix="right" namespace="${namespace}">
+            <origin xyz="${wheel_base} ${-base_y_size/2} 0" rpy="0 0 0" />
+        </xacro:racecar_hinge>
+
+        <!-- Racecar wheel macros -->
+        <xacro:racecar_wheel wheel_prefix="front_left" namespace="${namespace}" parent="left_hinge_link">
+            <origin xyz="0 ${wheel_length/2} 0" rpy="0 0 0" />
+        </xacro:racecar_wheel>
+        <xacro:racecar_wheel wheel_prefix="front_right" namespace="${namespace}" parent="right_hinge_link">
+            <origin xyz="0 ${-wheel_length/2} 0" rpy="0 0 0" />
+        </xacro:racecar_wheel>
+        <xacro:racecar_wheel wheel_prefix="rear_left" namespace="${namespace}" parent="base_link">
+            <origin xyz="0 ${track/2} 0" rpy="0 0 0" />
+        </xacro:racecar_wheel>
+        <xacro:racecar_wheel wheel_prefix="rear_right" namespace="${namespace}" parent="base_link">
+            <origin xyz="0 ${-track/2} 0" rpy="0 0 0" />
+        </xacro:racecar_wheel>
+
+        <gazebo>
+          <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>${namespace}</robotNamespace>
+            <legacyModeNS>true</legacyModeNS>
+          </plugin>
+        </gazebo>
+
+        <xacro:include filename="$(find racecar_description)/urdf/sensors.xacro"/>
+        <xacro:include filename="$(find racecar_description)/urdf/accessories.urdf.xacro"/>
+
+    </xacro:macro>
+</robot>

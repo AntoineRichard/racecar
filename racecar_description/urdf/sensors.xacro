@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- IMU -->
+    <gazebo>
+        <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
+            <robotNamespace>/$(arg namespace)</robotNamespace>
+            <updateRate>50.0</updateRate>
+            <bodyName>$(arg suffix_ns)base_link</bodyName>
+            <frameId>$(arg suffix_ns)base_link</frameId>
+            <topicName>/$(arg suffix_ns)imu/data</topicName>
+            <accelDrift>0.005 0.005 0.005</accelDrift>
+            <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+            <rateDrift>0.005 0.005 0.005 </rateDrift>
+            <rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
+            <headingDrift>0.005</headingDrift>
+            <headingGaussianNoise>0.005</headingGaussianNoise>
+        </plugin>
+    </gazebo>
+    
+    <!-- GPS -->
+    <gazebo>
+        <plugin name="gps_controller" filename="libhector_gazebo_ros_gps.so">
+            <robotNamespace>/$(arg namespace)</robotNamespace>
+            <updateRate>40</updateRate>
+            <bodyName>$(arg suffix_ns)base_link</bodyName>
+            <frameId>$(arg suffix_ns)base_link</frameId>
+            <topicName>/$(arg suffix_ns)navsat/fix</topicName>
+            <velocityTopicName>/$(arg suffix_ns)navsat/vel</velocityTopicName>
+            <referenceLatitude>49.9</referenceLatitude>
+            <referenceLongitude>8.9</referenceLongitude>
+            <referenceHeading>0</referenceHeading>
+            <referenceAltitude>0</referenceAltitude>
+            <drift>0.0001 0.0001 0.0001</drift>
+        </plugin>
+    </gazebo>
+    
+    <!-- Mount a Perfect Pose 3D sensor. -->
+    <gazebo>
+        <plugin filename="libgazebo_ros_p3d.so" name="groundtruth_sim">
+            <updateRate>50.0</updateRate>
+            <robotNamespace>/$(arg namespace)</robotNamespace>
+            <bodyName>$(arg suffix_ns)base_link</bodyName>
+            <topicName>/$(arg suffix_ns)/pose_gt</topicName>
+            <gaussianNoise>0.0</gaussianNoise>
+            <frameName>world</frameName>
+        </plugin>
+    </gazebo>
+</robot>
