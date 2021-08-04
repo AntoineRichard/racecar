@@ -72,10 +72,13 @@
         </xacro:racecar_wheel>
 
         <gazebo>
-          <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>${namespace}</robotNamespace>
-            <legacyModeNS>true</legacyModeNS>
-          </plugin>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+                <robotNamespace>${namespace}</robotNamespace>
+                <legacyModeNS>true</legacyModeNS>
+            </plugin>
+            <plugin name="force_plugin" filename="libforce_plugin.so">
+                <namespace>${namespace}</namespace>
+            </plugin>
         </gazebo>
 
         <xacro:include filename="$(find racecar_description)/urdf/sensors.xacro"/>

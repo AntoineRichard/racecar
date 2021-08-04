@@ -40,10 +40,10 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-
+  <build_depend>gazebo_ros</build_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-        
+    <gazebo_ros plugin_path="${prefix}/lib" gazebo_media_path="${prefix}" />
   </export>
 </package>
