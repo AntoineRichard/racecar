@@ -58,16 +58,16 @@
         </xacro:racecar_hinge>
 
         <!-- Racecar wheel macros -->
-        <xacro:racecar_wheel wheel_prefix="front_left" namespace="${namespace}" parent="left_hinge_link">
+        <xacro:racecar_wheel wheel_prefix="front_left" namespace="${namespace}" parent="left_hinge_link" is_motor="false">
             <origin xyz="0 ${wheel_length/2} 0" rpy="0 0 0" />
         </xacro:racecar_wheel>
-        <xacro:racecar_wheel wheel_prefix="front_right" namespace="${namespace}" parent="right_hinge_link">
+        <xacro:racecar_wheel wheel_prefix="front_right" namespace="${namespace}" parent="right_hinge_link" is_motor="false">
             <origin xyz="0 ${-wheel_length/2} 0" rpy="0 0 0" />
         </xacro:racecar_wheel>
-        <xacro:racecar_wheel wheel_prefix="rear_left" namespace="${namespace}" parent="base_link">
+        <xacro:racecar_wheel wheel_prefix="rear_left" namespace="${namespace}" parent="base_link" is_motor="true">
             <origin xyz="0 ${track/2} 0" rpy="0 0 0" />
         </xacro:racecar_wheel>
-        <xacro:racecar_wheel wheel_prefix="rear_right" namespace="${namespace}" parent="base_link">
+        <xacro:racecar_wheel wheel_prefix="rear_right" namespace="${namespace}" parent="base_link" is_motor="true">
             <origin xyz="0 ${-track/2} 0" rpy="0 0 0" />
         </xacro:racecar_wheel>
 

@@ -40,20 +40,20 @@ class GZInterface:
         r = self.wheel_fr_dist/(tan(theta) + 1e-9)
         omega = linear_speed/r
         #front_left
-        v_wx = linear_speed + omega*self.wheel_lr_dist
-        v_wy = omega*self.wheel_fr_dist
-        vel = hypot(v_wy,v_wx)/self.wheel_radius
-        steer = atan2(v_wy, v_wx)
-        steer = fmod(steer, pi)
-        self.front_left_wheel_pub.publish(vel*sign(data.drive.speed))
-        self.left_steering_hinge_pub.publish(steer)
-        #front_right
         v_wx = linear_speed - omega*self.wheel_lr_dist
         v_wy = omega*self.wheel_fr_dist
         vel = hypot(v_wy,v_wx)/self.wheel_radius
         steer = atan2(v_wy, v_wx)
-        steer = fmod(steer, pi)
-        self.front_right_wheel_pub.publish(vel*sign(data.drive.speed))
+        steer = fmod(steer+2.5*pi, pi) - pi*0.5
+        #self.front_left_wheel_pub.publish(vel*sign(data.drive.speed))
+        self.left_steering_hinge_pub.publish(steer)
+        #front_right
+        v_wx = linear_speed + omega*self.wheel_lr_dist
+        v_wy = omega*self.wheel_fr_dist
+        vel = hypot(v_wy,v_wx)/self.wheel_radius
+        steer = atan2(v_wy, v_wx)
+        steer = fmod(steer+2.5*pi, pi) - pi*0.5
+        #self.front_right_wheel_pub.publish(vel*sign(data.drive.speed))
         self.right_steering_hinge_pub.publish(steer)
         #rear_left
         v_wx = linear_speed - omega*self.wheel_lr_dist
