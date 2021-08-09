@@ -29,10 +29,10 @@ rear_right_wheel_vel_controller:
 # Position Controllers ---------------------------------------
 left_hinge_position_controller:
   joint: left_hinge
-  type: effort_controllers/JointPositionController
+  type: position_controllers/JointPositionController
   pid: {p: 10.0, i: 2.0, d: 0.4}
 right_hinge_position_controller:
   joint: right_hinge
-  type: effort_controllers/JointPositionController
+  type: position_controllers/JointPositionController
   pid: {p: 10.0, i: 2.0, d: 0.4}
 

@@ -27,11 +27,11 @@
         <transmission name="${namespace}${hinge_prefix}_hinge_trans" type="SimpleTransmission">
             <type>transmission_interface/SimpleTransmission</type>
             <actuator name="${namespace}${hinge_prefix}_hinge_motor">
-                <hardwareInterface>EffortJointInterface</hardwareInterface>
+                <hardwareInterface>PositionJointInterface</hardwareInterface>
                 <mechanicalReduction>1</mechanicalReduction>
             </actuator>
             <joint name="${namespace}${hinge_prefix}_hinge">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             </joint>
        </transmission>
 

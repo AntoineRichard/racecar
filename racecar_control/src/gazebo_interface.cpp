@@ -160,7 +160,7 @@ void GZInterface::applyModel() {
     steer = std::remainder(steer, M_PI);
     delta_steer = fabs(steer - left_steer_);
     delta_time = ros::Time::now().toSec() - last_left_steer_update_.toSec();
-    if ((delta_steer > 0.02) || (delta_time > 0.25)) {
+    if ((delta_steer > 0.01) || (delta_time > 0.25)) {
         data.data = steer;
         left_steer_ = steer;
         left_steering_hinge_pub_.publish(data);
@@ -173,7 +173,7 @@ void GZInterface::applyModel() {
     steer = std::remainder(steer, M_PI);
     delta_steer = fabs(steer - right_steer_);
     delta_time = ros::Time::now().toSec() - last_right_steer_update_.toSec();
-    if ((delta_steer > 0.02) || (delta_time > 0.25)) {
+    if ((delta_steer > 0.01) || (delta_time > 0.25)) {
         data.data = steer;
         right_steer_ = steer;
         right_steering_hinge_pub_.publish(data);
@@ -185,7 +185,7 @@ void GZInterface::applyModel() {
     throttle = sgn(cur_vel_)*std::hypot(v_wx,v_wy)/wheel_radius_;
     delta_throttle = fabs(throttle - left_throttle_);
     delta_time = ros::Time::now().toSec() - last_left_throttle_update_.toSec();
-    if ((delta_throttle > 1.0) || (delta_time > 0.25)) {
+    if ((delta_throttle > 0.5) || (delta_time > 0.25)) {
         data.data = throttle;
         left_throttle_ = throttle;
         rear_left_wheel_pub_.publish(data);
@@ -197,7 +197,7 @@ void GZInterface::applyModel() {
     throttle = sgn(cur_vel_)*std::hypot(v_wx, v_wy)/wheel_radius_;
     delta_throttle = fabs(throttle - right_throttle_);
     delta_time = ros::Time::now().toSec() - last_right_throttle_update_.toSec();
-    if ((delta_throttle > 1.0) || (delta_time > 0.25)) {
+    if ((delta_throttle > 0.5) || (delta_time > 0.25)) {
         data.data = throttle;
         right_throttle_ = throttle;
         rear_right_wheel_pub_.publish(data);
