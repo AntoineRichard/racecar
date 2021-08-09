@@ -37,17 +37,18 @@
             <child link="${namespace}${wheel_prefix}_wheel_link"/>
             <xacro:insert_block name="joint_pose"/>
             <axis xyz="0 1 0" rpy="0 0 0" />
+            <limit effort="100" velocity="400" />
         </joint>
 
         <xacro:if value="${is_motor}">
             <transmission name="${namespace}${wheel_prefix}_wheel_trans" type="SimpleTransmission">
                 <type>transmission_interface/SimpleTransmission</type>
                 <actuator name="${namespace}${wheel_prefix}_wheel_motor">
-                    <hardwareInterface>EffortJointInterface</hardwareInterface>
+                    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
                     <mechanicalReduction>1</mechanicalReduction>
                 </actuator>
                 <joint name="${namespace}${wheel_prefix}_wheel">
-                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                    <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
                 </joint>
             </transmission>
         </xacro:if>

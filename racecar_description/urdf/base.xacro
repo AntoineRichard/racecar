@@ -27,12 +27,12 @@
                     <mesh filename="package://racecar_description/meshes/chassis.STL" />
                 </geometry>
             </visual>
-            <collision>
+            <!--collision>
                 <origin xyz="${ -0.03 + base_x_size/2} 0 0" rpy="0 0 0" />
                 <geometry>
                     <box size="${base_x_size} ${base_y_size*0.9} ${base_z_size}"/>
                 </geometry>
-            </collision>
+            </collision-->
         </link>
         <link name="${namespace}inertial_link">
             <inertial>

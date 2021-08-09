@@ -26,7 +26,7 @@ class GZInterface:
         self.right_steering_hinge_pub = rospy.Publisher('~right_steering_hinge_position_ctrl', Float64, queue_size=1)
 
     def cmdCallback(self, data):
-        linear_speed = abs(data.drive.speed)
+        linear_speed = abs(data.drive.speed)*20.0
         theta = data.drive.steering_angle
 
         # Bound theta
