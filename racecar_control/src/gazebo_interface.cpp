@@ -63,8 +63,8 @@ GZInterface::GZInterface() : nh_("~") {
     nh_.param("max_steering_angle", steer_max_, 0.5f); //Radians
     nh_.param("max_steering_speed", steer_max_speed_, 4.0f); //Radians per seconds
 
-    nh_.param("max_linear_speed", vlin_max_, 10.f); //Meters per seconds
-    nh_.param("min_linear_speed", vlin_min_, -2.5f); //Meters per seconds
+    nh_.param("max_linear_speed", vlin_max_, 5.f); //Meters per seconds
+    nh_.param("min_linear_speed", vlin_min_, -1.0f); //Meters per seconds
     nh_.param("max_linear_acceleration", vlin_max_acc_, 2.5f); //Meter per seconds square
     nh_.param("min_linear_acceleration", vlin_min_acc_, -2.5f); //Meters per seconds square
 
