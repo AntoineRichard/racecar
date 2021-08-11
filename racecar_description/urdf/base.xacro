@@ -79,6 +79,7 @@
             </plugin>
             <plugin name="force_plugin" filename="libforce_plugin.so">
                 <namespace>${namespace}</namespace>
+                <force>100.0</force>
             </plugin>
         </gazebo>
 
