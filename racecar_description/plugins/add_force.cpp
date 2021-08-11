@@ -13,6 +13,7 @@ namespace gazebo
             gazebo::physics::LinkPtr fr_wheel_;
             gazebo::physics::LinkPtr rl_wheel_;
             gazebo::physics::LinkPtr rr_wheel_;
+            float force_;
         public: 
             ForcePlugin() : ModelPlugin() {
             }
@@ -23,7 +24,9 @@ namespace gazebo
                 if (_sdf->HasElement("namespace")) {
                     namespace_ = _sdf->Get<std::string>("namespace");
                 }
-
+                if (_sdf->HasElement("force")) {
+                    force_ = _sdf->Get<float>("force");
+                }
                 printf("Force plugin loaded: %s\n",_model->GetName().c_str());
                 std::stringstream ss1;
                 ss1 << namespace_ << "base_link";
@@ -55,7 +58,7 @@ namespace gazebo
             }
 
             void OnUpdate() {
-                ignition::math::Vector3d force = ignition::math::Vector3d(0, 0, -4000);
+                ignition::math::Vector3d force = ignition::math::Vector3d(0, 0, -force_);
                 base_link_->AddForce(force / 2);
                 fl_wheel_->AddForce(force / 4);
                 fr_wheel_->AddForce(force / 4);
